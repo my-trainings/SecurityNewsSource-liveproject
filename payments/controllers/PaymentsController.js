@@ -11,14 +11,14 @@ class PaymentsController {
     async handleGetPaymentMethod(req, res) {
         const pm = await this.paymentRepository.getPaymentMethod()
 
-        if(Object.entries(pm).length == 0) {
+        if (Object.entries(pm).length == 0) {
             res.status(404)
             res.send({"error":"payment method not found"})
             return
         }
 
         const result = this.transformToApiFormat(pm)
-        res.send(result)        
+        res.send(result)
     }
 
     async handleAddPaymentMethod(req, res) {
@@ -33,7 +33,7 @@ class PaymentsController {
 
         await this.paymentRepository.addOrReplacePaymentMethod(paymentMethod.paymentMethod)
         const result = this.transformToApiFormat(paymentMethod.paymentMethod)
-        res.send(result)        
+        res.send(result)
     }
 
     async handleRemovePaymentMethod(req, res) {
@@ -47,7 +47,7 @@ class PaymentsController {
         const {type, amount} = req.body
         const errors = this.checkProcessRequest(type, amount)
 
-        if(errors.error) {
+        if (errors.error) {
             res.status(400)
             res.send(errors.errors)
             return
@@ -69,22 +69,22 @@ class PaymentsController {
 
         let foundError = false
 
-        if(nameErrors.length > 0) {
+        if (nameErrors.length > 0) {
             this.logger.error(`Name validation errors: ${nameErrors}`)
             foundError = true
         }
 
-        if(addressErrors.length > 0) {
+        if (addressErrors.length > 0) {
             this.logger.error(`Address validation errors: ${addressErrors}`)
             foundError = true
         }
 
-        if(cardErrors.length > 0) {
+        if (cardErrors.length > 0) {
             this.logger.error(`Card validation errors: ${cardErrors}`)
             foundError = true
         }
 
-        if(foundError) {
+        if (foundError) {
             return {
                 "error": true,
                 "errors": {
@@ -105,10 +105,10 @@ class PaymentsController {
             "error": false,
             "paymentMethod": paymentMethod
         }
-    }    
+    }
 
     transformToApiFormat(paymentMethod) {
-        
+
         return {
             "name": paymentMethod.name,
             "cardNumberLast4": paymentMethod.cardDetails.last4,

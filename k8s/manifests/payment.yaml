@@ -18,6 +18,14 @@ spec:
       containers:
       - name: payment
         image: sns-payment:latest
+        imagePullPolicy: "Never"
+        resources:
+          requests:
+            cpu: 250m
+            memory: 128Mi
+          limits:
+            cpu: 300m
+            memory: 256Mi
         ports:
         - containerPort: 3000
         env:
@@ -25,7 +33,6 @@ spec:
             value: "production"
           - name: CONFIG_DIR
             value: "/opt/sns/app/config"
-        imagePullPolicy: "Never"
 ---
 apiVersion: v1
 kind: Service
